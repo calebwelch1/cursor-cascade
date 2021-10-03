@@ -5,10 +5,11 @@
       <el-tabs v-model="currentTab" @tab-click="handleClick">
         <el-tab-pane label="home" name="first">
           <div class="col-span-12 w-full flex-col">
-            <div class="w-full h-full" style="background-color:white;">
+            <div id="myDocument" class="w-full h-full " style="background-color:white;position:relative;">
               <input type="text" id="cursorX" size="6"> X-position of the mouse cursor
               <br /><br />
               <input type="text" id="cursorY" size="6"> Y-position of the mouse cursor
+              <div :style="`borderRadius: 9999px; background-color: blue; height: 1rem; width: 1rem;position:absolute;`"></div>
             </div>
           </div>
         </el-tab-pane>
@@ -19,6 +20,46 @@
 </template>
 <script>
 import { Tabs } from 'element-ui'
+//The Window interface represents a window containing a DOM document; the document property points to the DOM document loaded in that window.
+window.onload = init;
+//assigns the onload event to whatever is returned from the init function when it's executed. init will be executed immediately
+function init() {
+//window.event = Returns the current event, which is the event currently being handled by the JavaScript code's context, or undefined if no event is currently being handled.
+	if (window.Event) {
+//https://developer.mozilla.org/en-US/docs/Web/API/Window/captureEvents
+//captures specified events occuring in the document window, in this case mousemove
+	document.captureEvents(Event.MOUSEMOVE);
+	}
+// then our function
+	document.onmousemove = getCursorXY;
+}
+
+function addElement () {
+  // create a new div element
+  const newDiv = document.createElement("div");
+
+  // and give it some content
+  const newContent = document.createTextNode("Hi there and greetings!");
+
+  // add the text node to the newly created div
+  newDiv.appendChild(newContent);
+
+  // add the newly created element and its content into the DOM
+  const currentDiv = document.getElementBy("myDocument");
+  document.body.insertBefore(newDiv, currentDiv);
+}
+
+function getCursorXY(e) {
+	document.getElementById('cursorX').value = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+	document.getElementById('cursorY').value = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+
+  // create an element
+  addElement();
+}
+
+//TODO: amandabraga.com body element > div with id of cursor inside is a div that is the circle. translate3d(x,y)
+//TODO: body element > div with several divs with class "hidden" inside are the images we want to show on mouse move
+
 
 export default {
   name: 'HomeRouter',
