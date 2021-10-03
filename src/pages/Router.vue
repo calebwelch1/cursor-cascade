@@ -1,24 +1,21 @@
 <template>
 <div>
-<div class="container">
-  <div class="col-span-12">
-    <el-tabs v-model="currentTab" @tab-click="handleClick">
-      <el-tab-pane label="one" name="first">
-        hi
-      </el-tab-pane>
-      <el-tab-pane label="two" name="second">
-      
-      </el-tab-pane>
-      <el-tab-pane label="three" name="third">
-
-      </el-tab-pane>
-      <el-tab-pane label="four" name="fourth">
-
-      </el-tab-pane>
-  </el-tabs>
-   </div>
-   </div>
+  <div class="container">
+    <div class="col-span-12">
+      <el-tabs v-model="currentTab" @tab-click="handleClick">
+        <el-tab-pane label="home" name="first">
+          <div class="col-span-12 w-full flex-col">
+            <div class="w-full h-full" style="background-color:white;">
+              <input type="text" id="cursorX" size="6"> X-position of the mouse cursor
+              <br /><br />
+              <input type="text" id="cursorY" size="6"> Y-position of the mouse cursor
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
+</div>
 </template>
 <script>
 import { Tabs } from 'element-ui'
