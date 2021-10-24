@@ -2,27 +2,24 @@
 <div>
   <div class="container">
     <div class="col-span-12">
-      <el-tabs v-model="currentTab" @tab-click="handleClick">
-        <el-tab-pane label="home" name="first">
           <div class="col-span-12 w-full flex-col">
             <div id="myDocument" class="w-full h-full " style="background-color:white;position:relative;">
               <input type="text" id="cursorX" size="6"> X-position of the mouse cursor
               <br /><br />
               <input type="text" id="cursorY" size="6"> Y-position of the mouse cursor
-              <div :style="`borderRadius: 9999px; background-color: blue; height: 1rem; width: 1rem;position:absolute;`"></div>
+              <img id="test" src="./test.jpg" style="width: 10%;"/>
             </div>
           </div>
-        </el-tab-pane>
-      </el-tabs>
     </div>
   </div>
 </div>
 </template>
 <script>
-import { Tabs } from 'element-ui'
+import testImg from './test.jpg'
 //The Window interface represents a window containing a DOM document; the document property points to the DOM document loaded in that window.
 window.onload = init;
 //assigns the onload event to whatever is returned from the init function when it's executed. init will be executed immediately
+
 function init() {
 //window.event = Returns the current event, which is the event currently being handled by the JavaScript code's context, or undefined if no event is currently being handled.
 	if (window.Event) {
@@ -34,38 +31,91 @@ function init() {
 	document.onmousemove = getCursorXY;
 }
 
-function addElement () {
-  // create a new div element
-  const newDiv = document.createElement("div");
+// function addElement () {
+//   // create a new div element
+//   const newDiv = document.createElement("div");
 
-  // and give it some content
-  const newContent = document.createTextNode("Hi there and greetings!");
+//   // and give it some content
+//   const newContent = document.createTextNode("Hi there and greetings!");
 
-  // add the text node to the newly created div
-  newDiv.appendChild(newContent);
+//   // add the text node to the newly created div
+//   newDiv.appendChild(newContent);
 
-  // add the newly created element and its content into the DOM
-  const currentDiv = document.getElementBy("myDocument");
-  document.body.insertBefore(newDiv, currentDiv);
-}
+//   // add the newly created element and its content into the DOM
+//   const currentDiv = document.getElementBy("myDocument");
+//   document.body.insertBefore(newDiv, currentDiv);
+// }
 
 function getCursorXY(e) {
 	document.getElementById('cursorX').value = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
 	document.getElementById('cursorY').value = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+  this.cursorX = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+  this.cursorY = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
 
   // create an element
-  addElement();
+  // addElement();
 }
 
+
+
+function getMouseCoords(e) {
+  // var e = e || window.event;
+  document.getElementById('container').innerHTML = e.clientX + ', ' +
+    e.clientY + '<br>' + e.screenX + ', ' + e.screenY;
+}
+
+
+var followCursor = (function() {
+  // make following rocket
+  // var s = document.createElement('div');
+  // s.style.position = 'absolute';
+  // s.style.margin = '0';
+  // s.style.padding = '5px';
+  // s.style.border = '1px solid red';
+  // s.textContent = "🚀"
+
+  // var test = document.getElementById('test')
+  // var div = document.createElement('div');
+  var test = document.createElement("img");
+  test.src = testImg;
+  test.style.position = 'absolute';
+  test.style.margin = '0';
+  test.style.border = '2px solid blue';
+  test.style.height = '2rem';
+  test.style.width = '2rem';
+  // var src = document.getElementById("header");
+  // src.appendChild(test);
+
+  return {
+    // append rocket div
+    init: function() {
+      // document.body.appendChild(s);
+      document.body.appendChild(test);
+      // document.getElementById('container').appendChild(test);
+
+    },
+    // make rocket follow
+    run: function(e) {
+      // var e = e || window.event;
+      test.style.left = (e.clientX - 5) + 'px';
+      test.style.top = (e.clientY - 5) + 'px';
+      // s.style.left = (e.clientX - 5) + 'px';
+      // s.style.top = (e.clientY - 5) + 'px';
+      getMouseCoords(e);
+    }
+  };
+}());
+
+window.onload = function() {
+  followCursor.init();
+  document.body.onmousemove = followCursor.run;
+}
 //TODO: amandabraga.com body element > div with id of cursor inside is a div that is the circle. translate3d(x,y)
 //TODO: body element > div with several divs with class "hidden" inside are the images we want to show on mouse move
 
 
 export default {
   name: 'HomeRouter',
-  components:{
-    elTabs:Tabs,
-  },
   props: {
     msg: String
   },
@@ -73,6 +123,8 @@ export default {
   return {
     currentTab: 'first',
     none: false,
+    cursorX:0,
+    cursorY:0,
   }
  },
  methods: {
