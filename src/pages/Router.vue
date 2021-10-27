@@ -16,20 +16,21 @@
 </template>
 <script>
 import testImg from './test.jpg'
+import testImg2 from './test2.jpg'
 //The Window interface represents a window containing a DOM document; the document property points to the DOM document loaded in that window.
-window.onload = init;
+// window.onload = init;
 //assigns the onload event to whatever is returned from the init function when it's executed. init will be executed immediately
 
-function init() {
-//window.event = Returns the current event, which is the event currently being handled by the JavaScript code's context, or undefined if no event is currently being handled.
-	if (window.Event) {
-//https://developer.mozilla.org/en-US/docs/Web/API/Window/captureEvents
-//captures specified events occuring in the document window, in this case mousemove
-	document.captureEvents(Event.MOUSEMOVE);
-	}
-// then our function
-	document.onmousemove = getCursorXY;
-}
+// function init() {
+// //window.event = Returns the current event, which is the event currently being handled by the JavaScript code's context, or undefined if no event is currently being handled.
+// 	if (window.Event) {
+// //https://developer.mozilla.org/en-US/docs/Web/API/Window/captureEvents
+// //captures specified events occuring in the document window, in this case mousemove
+// 	document.captureEvents(Event.MOUSEMOVE);
+// 	}
+// // then our function
+// 	document.onmousemove = getCursorXY;
+// }
 
 // function addElement () {
 //   // create a new div element
@@ -46,15 +47,15 @@ function init() {
 //   document.body.insertBefore(newDiv, currentDiv);
 // }
 
-function getCursorXY(e) {
-	document.getElementById('cursorX').value = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-	document.getElementById('cursorY').value = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-  this.cursorX = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-  this.cursorY = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+// function getCursorXY(e) {
+// 	document.getElementById('cursorX').value = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+// 	document.getElementById('cursorY').value = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+//   this.cursorX = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+//   this.cursorY = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
 
-  // create an element
-  // addElement();
-}
+//   // create an element
+//   // addElement();
+// }
 
 
 
@@ -76,13 +77,20 @@ var followCursor = (function() {
 
   // var test = document.getElementById('test')
   // var div = document.createElement('div');
+  var secondImg = document.createElement("img");
+  secondImg.src = testImg2;
+  secondImg.style.position = 'absolute';
+  secondImg.style.margin = '0';
+  secondImg.style.border = '2px solid blue';
+  secondImg.style.height = '50%';
+  secondImg.style.width = '25%';
   var test = document.createElement("img");
   test.src = testImg;
   test.style.position = 'absolute';
   test.style.margin = '0';
   test.style.border = '2px solid blue';
-  test.style.height = '2rem';
-  test.style.width = '2rem';
+  test.style.height = '50%';
+  test.style.width = '25%';
   // var src = document.getElementById("header");
   // src.appendChild(test);
 
@@ -101,6 +109,14 @@ var followCursor = (function() {
       test.style.top = (e.clientY - 5) + 'px';
       // s.style.left = (e.clientX - 5) + 'px';
       // s.style.top = (e.clientY - 5) + 'px';
+      // console.log(e.clientX, e.clientY)
+      if ( e.clientX % 3 != 0){
+        // this code switches the image on mousemove
+        test.src = testImg2;
+      }
+      else {
+        test.src = testImg;
+      }
       getMouseCoords(e);
     }
   };
